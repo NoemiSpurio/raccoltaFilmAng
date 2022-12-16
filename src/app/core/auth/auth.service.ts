@@ -1,5 +1,6 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { User } from 'src/app/model/user';
 
 @Injectable({
@@ -7,10 +8,23 @@ import { User } from 'src/app/model/user';
 })
 export class AuthService {
 
+  private apiServer = 'http://localhost:8080/api/auth/login';
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
+
+  constructor(private http: HttpClient){
+
+  }
+
   private userLoggedSubject$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
   login(loginForm: User): Observable<User> {
-    return of({ username: loginForm.username, token: "123456" });
+    return this.http.post<{'jwt-token': string}>(this.apiServer, JSON .stringify(loginForm), this.httpOptions).pipe(
+      switchMap(res => of({ username: loginForm.username, token: res['jwt-token'] }))
+    );
     // return this.http.post<User>("login", JSON .stringify(loginForm));
   }
 

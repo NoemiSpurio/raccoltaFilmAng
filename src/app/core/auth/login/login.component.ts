@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
+// per il controllo della pw
+// pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{6,}"
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
