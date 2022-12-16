@@ -25,7 +25,6 @@ export class AuthService {
     return this.http.post<{'jwt-token': string}>(this.apiServer, JSON .stringify(loginForm), this.httpOptions).pipe(
       switchMap(res => of({ username: loginForm.username, token: res['jwt-token'] }))
     );
-    // return this.http.post<User>("login", JSON .stringify(loginForm));
   }
 
   setUserLogged(user: User | null) {
