@@ -9,10 +9,7 @@ export class AuthService {
 
   private userLoggedSubject$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
-  constructor() { }
-
   login(loginForm: User): Observable<User> {
-    this.setUserLogged(loginForm);
     return of({ username: loginForm.username, token: "123456" });
     // return this.http.post<User>("login", JSON .stringify(loginForm));
   }

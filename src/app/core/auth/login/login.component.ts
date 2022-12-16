@@ -29,7 +29,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   login(loginForm: NgForm) {
     if (loginForm.valid)
       //this.router.navigate(['welcome']);
-      this.authService.login(loginForm.value).pipe(takeUntil(this.destroy$)).subscribe(res => { this.router.navigateByUrl("welcome"); });
+      this.authService.login(loginForm.value).pipe(takeUntil(this.destroy$)).subscribe(res => 
+      { 
+        this.authService.setUserLogged(res);
+        this.router.navigateByUrl("welcome");
+       });
     else
       this.errorMessage = 'Attenzione! Operazione fallita! Il form non è stato validato';
   }
