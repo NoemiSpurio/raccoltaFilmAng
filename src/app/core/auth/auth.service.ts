@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
 import { User } from 'src/app/model/user';
 
 @Injectable({
@@ -23,7 +23,9 @@ export class AuthService {
 
   login(loginForm: User): Observable<User> {
     return this.http.post<{'jwt-token': string}>(this.apiServer, JSON .stringify(loginForm), this.httpOptions).pipe(
-      switchMap(res => of({ username: loginForm.username, token: res['jwt-token'] }))
+      map(res => { 
+        return {username: loginForm.username, token: res['jwt-token'] }
+      })
     );
   }
 
