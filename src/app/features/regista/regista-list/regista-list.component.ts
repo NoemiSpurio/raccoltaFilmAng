@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { Regista } from 'src/app/model/regista';
 import { RegistaService } from '../regista.service';
 
@@ -15,7 +16,7 @@ export class RegistaListComponent implements OnInit {
   sub?: Subscription;
   confirmMessage: string = '';
 
-  constructor(private registaService: RegistaService, private route: ActivatedRoute) { }
+  constructor(private registaService: RegistaService, private route: ActivatedRoute, public authService: AuthService) { }
 
   ngOnInit(): void {
     this.sub = this.registaService.getRegisti().subscribe(registaListItem => this.registi = registaListItem);

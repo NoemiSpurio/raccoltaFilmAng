@@ -15,30 +15,40 @@ export class AuthService {
     })
   }
 
-  constructor(private http: HttpClient){
+  constructor(private http: HttpClient) {
 
   }
 
   private userLoggedSubject$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
   login(loginForm: User): Observable<User> {
-    return this.http.post<{'jwt-token': string}>(this.apiServer, JSON .stringify(loginForm), this.httpOptions).pipe(
-      map(res => { 
-        return {username: loginForm.username, token: res['jwt-token'] }
+    return this.http.post<{ 'jwt-token': string }>(this.apiServer, JSON.stringify(loginForm), this.httpOptions).pipe(
+      map(res => {
+        return { username: loginForm.username, token: res['jwt-token'] }
       })
     );
   }
 
   setUserLogged(user: User | null) {
+    let apiRolesInfo = 'http://localhost:8080/api/utente/rolesInfo';
+    this.userLoggedSubject$.next(user);
+    this.http.get<string[]>(apiRolesInfo, this.httpOptions).subscribe(rolesItem => user!.roles = rolesItem);
     this.userLoggedSubject$.next(user);
   }
 
-  getUserLogged(): Observable<User | null>{
+  getUserLogged(): Observable<User | null> {
     return this.userLoggedSubject$.asObservable();
   }
 
   isLoggedIn(): boolean {
     return this.userLoggedSubject$.value ? !!this.userLoggedSubject$.value.token : false;
+  }
+
+  isAdmin(): boolean {
+    if(this.userLoggedSubject$.value?.roles?.includes("ROLE_ADMIN"))
+      return true;
+    else
+      return false;
   }
 
   getUserToken(): string | null {

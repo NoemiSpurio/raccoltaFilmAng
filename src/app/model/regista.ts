@@ -3,11 +3,11 @@ import { Sesso } from "./sesso";
 
 export interface Regista {
 
-    id: number,
+    id?: number,
     nome: string,
     cognome: string,
     nickName: string,
     dataDiNascita: Date,
     sesso: Sesso,
-    films: Film[]
+    films?: Film[]
 }
